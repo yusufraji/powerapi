@@ -41,18 +41,22 @@ class PowerReport(Report):
     PowerReport stores the power estimation information.
     """
 
-    def __init__(self, timestamp: datetime, sensor: str, target: str, power: float, metadata: Dict[str, Any] = {}):
+    def __init__(self, timestamp: datetime, sensor: str, target: str, power: float, emission: float, sci: float, metadata: Dict[str, Any] = {}):
         """
         Initialize a Power report using the given parameters.
         :param datetime timestamp: Report timestamp
         :param str sensor: Sensor name
         :param str target: Target name
         :param float power: Power value
+        :param float emission: Emission value
+        :param float sci: Software Carbon Intensity value
         :param dict metadata: Metadata values, can be anything that add useful information
         """
         Report.__init__(self, timestamp, sensor, target, metadata)
 
         self.power = power
+        self.emission = emission
+        self.sci = sci
 
     def __repr__(self) -> str:
         return 'PowerReport(%s, %s, %s, %f, %s)' % (
@@ -167,7 +171,9 @@ class PowerReport(Report):
             'tags': report._gen_tag(tags),
             'time': str(report.timestamp),
             'fields': {
-                'power': report.power
+                'power': report.power,
+                'emission': report.emission,
+                'sci': report.sci
             }
         }
 
